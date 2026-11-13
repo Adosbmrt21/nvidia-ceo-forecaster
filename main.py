@@ -111,8 +111,8 @@ def forecast_market(prices, horizon):
         if emp is None:
             emp = base
         if len(window) > 60:
-            steps = range(10, len(window), 10)
-            mad10 = sum(abs(window[i] - window[i - 10]) for i in steps) / max(1, len(list(steps)))
+            jumps = [abs(window[i] - window[i - 10]) for i in range(10, len(window), 10)]
+            mad10 = sum(jumps) / len(jumps)
         else:
             mad10 = 0.0
         ratio = mad10 / BASE_MAD10 if mad10 > 0.0 else 0.0
