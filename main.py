@@ -103,6 +103,10 @@ def _empirical_rows(prices, horizon):
 
 def forecast_market(prices, horizon):
     """Five quantiles of the price at each minute 1..horizon after the last."""
+    if not prices:
+        # No price by the checkpoint: nothing to centre on. Flat rows at the
+        # middle keep the case valid instead of crashing the whole run.
+        return [[0.5, 0.5, 0.5, 0.5, 0.5] for _ in range(horizon)]
     x = prices[-1]
     base = _baseline_rows(x, horizon)
     try:
